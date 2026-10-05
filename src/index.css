@@ -19,7 +19,7 @@
 
 @layer base {
   html {
-    background: var(--color-paper);
+    background: #fff;
     color: var(--color-darkest);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;

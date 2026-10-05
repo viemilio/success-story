@@ -6,7 +6,8 @@ const ease = [0.22, 1, 0.36, 1] as const
 
 export function Closing({ onPlay }: { onPlay: () => void }) {
   return (
-    <section data-header="dark" className="relative overflow-hidden bg-darkest text-white">
+    <section className="bg-white px-3 pb-3">
+      <div className="relative overflow-hidden rounded-[2rem] bg-darkest text-white">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_60%_at_80%_10%,var(--color-vital),transparent_60%)] opacity-60" />
       <div className="relative px-5 pb-20 pt-32 md:px-10 md:pt-48">
         <h2 className="display text-[clamp(3rem,9vw,10rem)]">
@@ -76,6 +77,7 @@ export function Closing({ onPlay }: { onPlay: () => void }) {
           <a href="https://www.mhp.com/de/datenschutz" className="hover:text-white">Datenschutz</a>
         </nav>
       </footer>
+      </div>
     </section>
   )
 }

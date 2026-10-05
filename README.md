@@ -1,15 +1,15 @@
-# Variante B: „Der große Gangwechsel“ – The New Industrial
+# Variante B: „Der große Gangwechsel“ – Video-Statements
 
 Alternative MHP-Success-Story-Microsite mit Video-Statements und Magazin-Aufmachung
 (Variante A „18 Monate. 2.400 Gründe.“ liegt auf `claude/mhp-success-story-site-q5df29`).
 
 ## Experience
-- **Cover-Hero** wie eine Magazin-Titelseite: Kampagnen-Masthead „The New Industrial“, Kundenlogo (HALLBERG), Titelzeile, Cover-Lines
+- **Video-Hero**: Statement der Protagonistin läuft stumm als Bühne, Logo-Lockup HALLBERG × MHP, Headline im Magazinstil
 - **Video-Wand**: fünf Statements im Hochformat, Hover = stumme Vorschau, Klick = Vollbild-Player im Stories-Format
   (tippen weiter/zurück, halten = Pause, ← → / Leertaste / Esc)
-- **Redaktioneller Einstieg** mit Steckbrief, Initial und Pull-Quote
-- **Vier Prinzipien**, mit denen der Kunde The New Industrial formt (Bild folgt dem Cursor)
-- **Interview** im Magazin-Stil mit „sticky“ Video-Statement
+- **Story als Bento-Raster**: Steckbrief, Kennzahlen-Kacheln, Text, Zitat
+- **Vier Prinzipien** als aufklappende Bildkarten
+- **Interview als Chat-Verlauf** mit „sticky“ Video-Statement
 - **Bilanz**: Kurve zeichnet sich beim Scrollen, Kennzahlen
 - **Fahrplan**-Timeline und Schluss-Statement
 

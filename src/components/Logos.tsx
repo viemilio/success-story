@@ -17,7 +17,7 @@ export function HallbergLogo({ className = '', compact = false }: { className?: 
 
 export function MhpLogo({ className = '' }: { className?: string }) {
   return (
-    <span className={`inline-flex items-baseline gap-2 ${className}`}>
+    <span className={`inline-flex items-baseline gap-2 whitespace-nowrap ${className}`}>
       <span className="text-[1.35em] font-[800] tracking-[-0.04em]">MHP</span>
       <span className="text-[0.7em] font-medium tracking-wide opacity-80">A Porsche Company</span>
     </span>
@@ -27,7 +27,7 @@ export function MhpLogo({ className = '' }: { className?: string }) {
 /** Typografische Kampagnenmarke „The New Industrial“. */
 export function NewIndustrial({ className = '', onDark = false }: { className?: string; onDark?: boolean }) {
   return (
-    <span className={`whitespace-nowrap font-[800] uppercase tracking-[-0.02em] ${className}`}>
+    <span className={`font-[800] uppercase tracking-[-0.02em] ${className}`}>
       The New <span className={onDark ? 'text-kiwi' : 'text-vital'}>Industrial</span>
     </span>
   )

@@ -11,16 +11,13 @@ export function StoryPlayer({ start, onClose }: { start: number; onClose: () => 
   const [paused, setPaused] = useState(false)
   const video = useRef<HTMLVideoElement>(null)
   const s = statements[i]
-  const t = useStatementClock(s, !paused, video)
   const holdTimer = useRef<number>(0)
   const held = useRef(false)
 
   const next = useCallback(() => (i < statements.length - 1 ? setI(i + 1) : onClose()), [i, onClose])
   const prev = useCallback(() => setI((x) => Math.max(0, x - 1)), [])
 
-  useEffect(() => {
-    if (t >= s.duration) next()
-  }, [t, s.duration, next])
+  const t = useStatementClock(s, !paused, video, { onEnd: next })
 
   useEffect(() => {
     lockScroll(true)

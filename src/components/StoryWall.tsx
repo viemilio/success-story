@@ -9,7 +9,7 @@ const ease = [0.22, 1, 0.36, 1] as const
 function Card({ s, i, onOpen }: { s: Statement; i: number; onOpen: (i: number) => void }) {
   const [hover, setHover] = useState(false)
   const video = useRef<HTMLVideoElement>(null)
-  const t = useStatementClock(s, hover, video, true)
+  const t = useStatementClock(s, hover, video, { loop: true })
 
   return (
     <motion.button
@@ -21,14 +21,15 @@ function Card({ s, i, onOpen }: { s: Statement; i: number; onOpen: (i: number) =
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-10% 0px' }}
       transition={{ duration: 0.9, delay: i * 0.08, ease }}
-      className={`group relative aspect-[9/16] w-[68vw] shrink-0 snap-start overflow-hidden rounded-2xl text-left sm:w-[40vw] md:w-auto ${i % 2 ? 'md:translate-y-16' : ''}`}
+      whileHover={{ y: -12 }}
+      className="group relative aspect-[9/16] w-[68vw] shrink-0 snap-start overflow-hidden rounded-[1.75rem] text-left ring-1 ring-white/10 sm:w-[40vw] md:w-auto"
       data-cursor="Play"
     >
       <VideoFrame s={s} t={t} playing={hover} video={video} mode="card" className="h-full w-full transition-transform duration-700 ease-apple group-hover:scale-[1.03]" />
-      <span className="absolute left-4 top-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-darkest transition duration-500 ease-apple group-hover:scale-110 group-hover:bg-kiwi">
-        ▶
+      <span className="absolute left-4 top-4 flex items-center gap-2 rounded-full bg-white/15 py-1 pl-1 pr-3 text-xs font-semibold text-white ring-1 ring-white/20 backdrop-blur-xl transition duration-500 ease-apple group-hover:bg-kiwi group-hover:text-darkest">
+        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-[10px] text-darkest">▶</span>
+        0:{String(s.duration).padStart(2, '0')}
       </span>
-      <span className="eyebrow absolute right-4 top-6 text-[10px] text-white/80">0:{String(s.duration).padStart(2, '0')}</span>
       <div className="absolute inset-x-0 bottom-0 p-4 text-white">
         <p className="mb-2 text-sm font-medium leading-snug text-zircon">{s.topic}</p>
         <div className="flex items-center justify-between">
@@ -46,25 +47,24 @@ function Card({ s, i, onOpen }: { s: Statement; i: number; onOpen: (i: number) =
 /** Video-Wand: fünf kurze Statements im Hochformat. */
 export function StoryWall({ onOpen }: { onOpen: (i: number) => void }) {
   return (
-    <section id="statements" data-header="dark" className="relative overflow-hidden bg-darkest py-24 text-white md:py-36">
-      <div className="mb-14 grid gap-8 px-5 md:grid-cols-12 md:px-10">
-        <div className="md:col-span-7">
-          <p className="eyebrow mb-6 text-kiwi">Video-Statements · 1 Minute</p>
-          <h2 className="display text-[clamp(3rem,7vw,7.5rem)]">
-            Fünf Stimmen.
-            <br />
-            <span className="text-zircon/50">Ein Werk.</span>
-          </h2>
-        </div>
-        <p className="self-end text-lg text-zircon/80 md:col-span-4 md:col-start-9">
-          Die Menschen, die in Aalen <NewIndustrial onDark className="text-white" /> formen, erzählen selbst. Fahren Sie über eine Karte für die Vorschau, klicken Sie für den Film.
+    <section id="statements" className="bg-white px-3 pt-3 md:px-3">
+      <div className="relative overflow-hidden rounded-[2rem] bg-darkest py-20 text-white md:py-28">
+      <div className="pointer-events-none absolute -top-1/3 left-1/2 h-[80%] w-[80%] -translate-x-1/2 rounded-full bg-vital/40 blur-[120px]" />
+      <div className="relative mx-auto mb-14 max-w-3xl px-5 text-center">
+        <p className="mb-6 inline-flex rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium text-kiwi ring-1 ring-white/15">Video-Statements · 1 Minute</p>
+        <h2 className="display text-[clamp(3rem,7vw,7rem)]">
+          Fünf Stimmen. <span className="text-zircon/50">Ein Werk.</span>
+        </h2>
+        <p className="mx-auto mt-6 max-w-xl text-lg text-zircon/80">
+          Die Menschen, die in Aalen <NewIndustrial onDark className="text-white" /> formen, erzählen selbst. Mit der Maus über eine Karte fahren für die Vorschau, klicken für den Film.
         </p>
       </div>
 
-      <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-20 [scrollbar-width:none] md:grid md:grid-cols-5 md:gap-5 md:overflow-visible md:px-10">
+      <div className="relative flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-6 pt-4 [scrollbar-width:none] md:grid md:grid-cols-5 md:overflow-visible md:px-10">
         {statements.map((s, i) => (
           <Card key={s.id} s={s} i={i} onOpen={onOpen} />
         ))}
+      </div>
       </div>
     </section>
   )

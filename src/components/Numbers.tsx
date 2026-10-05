@@ -1,6 +1,8 @@
 import { animate, motion, useInView, useScroll, useTransform } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
-import { chart, facts } from '../content'
+import { chart, facts as allFacts } from '../content'
+
+const facts = allFacts.filter((f) => !f.value.includes('Mio'))
 
 const ease = [0.22, 1, 0.36, 1] as const
 const W = 1000
@@ -24,18 +26,17 @@ export function Numbers() {
   const area = `${d} L${pts.at(-1)!.x},${H - pad} L${pts[0].x},${H - pad} Z`
 
   return (
-    <section id="zahlen" className="relative bg-paper px-5 py-24 md:px-10 md:py-40">
-      <div className="grid gap-10 md:grid-cols-12">
-        <div className="md:col-span-4">
-          <p className="eyebrow text-vital">Die Bilanz</p>
-          <h2 className="display mt-6 text-[clamp(2.8rem,5.4vw,5.8rem)] text-mhp">Von 58 auf 94 Prozent.</h2>
+    <section id="zahlen" className="bg-white px-3 pb-24 md:pb-36">
+      <div className="grid gap-3 md:grid-cols-12">
+        <div className="flex flex-col rounded-[2rem] bg-paper p-7 md:col-span-4 md:p-10">
+          <p className="inline-flex self-start rounded-full bg-white px-4 py-1.5 text-sm font-medium text-mhp ring-1 ring-darkest/10">Die Bilanz</p>
+          <h2 className="display mt-auto pt-10 text-[clamp(2.8rem,5vw,5.4rem)] text-darkest">Von 58 auf <span className="text-vital">94 Prozent.</span></h2>
           <p className="mt-6 max-w-sm text-lg text-darkest/70">
             Die Auslastung eines Werks, das abgeschrieben war. Heute fertigt Aalen E-Achsen für drei Automobilhersteller.
           </p>
-          <BigCounter />
         </div>
 
-        <div ref={ref} className="md:col-span-8">
+        <div ref={ref} className="rounded-[2rem] bg-paper p-6 md:col-span-8 md:p-10">
           <div className="flex items-center justify-between border-b border-darkest/15 pb-3 text-sm">
             <span className="font-semibold">{chart.title}</span>
             <span className="text-darkest/50">in {chart.unit}, quartalsweise</span>
@@ -68,7 +69,8 @@ export function Numbers() {
         </div>
       </div>
 
-      <div className="mt-20 grid grid-cols-2 border-t-4 border-mhp md:grid-cols-4">
+      <div className="mt-3 grid grid-cols-2 gap-3 md:grid-cols-4">
+        <BigCounter />
         {facts.map((f, i) => (
           <motion.div
             key={f.label}
@@ -76,10 +78,13 @@ export function Numbers() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.9, delay: i * 0.1, ease }}
-            className="border-b border-darkest/15 py-8 pr-4 md:border-b-0 md:border-r md:px-6 md:first:pl-0 md:last:border-r-0"
+            className={`flex flex-col justify-between gap-8 rounded-[2rem] p-6 md:p-8 ${['bg-zircon/60', 'bg-mint/90', 'bg-kiwi', 'bg-vital text-white'][i]}`}
           >
-            <p className="display text-[clamp(2.4rem,4.4vw,4.6rem)] text-mhp">{f.value}</p>
-            <p className="mt-3 font-medium text-darkest/70">{f.label}</p>
+            <span className="text-sm font-medium opacity-60">0{i + 1}</span>
+            <div>
+              <p className="display text-[clamp(2.2rem,3.4vw,3.6rem)]">{f.value}</p>
+              <p className="mt-3 text-sm font-medium opacity-75">{f.label}</p>
+            </div>
           </motion.div>
         ))}
       </div>
@@ -110,12 +115,15 @@ function BigCounter() {
     return () => c.stop()
   }, [inView])
   return (
-    <div className="mt-12 rounded-2xl bg-mhp p-6 text-white">
-      <p ref={ref} className="display text-[clamp(3.5rem,6vw,6rem)] tabular-nums text-kiwi">
-        {v}
-        <span className="ml-2 text-[0.4em] tracking-normal">Mio. €</span>
-      </p>
-      <p className="mt-2 text-zircon">Neuaufträge für E-Mobilität, gesichert bis 2032.</p>
+    <div className="col-span-2 flex flex-col justify-between gap-8 rounded-[2rem] bg-darkest p-6 text-white md:col-span-1 md:p-8">
+      <span className="text-sm font-medium text-white/60">Neuaufträge</span>
+      <div>
+        <p ref={ref} className="display text-[clamp(2.2rem,3.4vw,3.6rem)] tabular-nums text-kiwi">
+          {v}
+          <span className="ml-1 text-[0.45em] tracking-normal">Mio. €</span>
+        </p>
+        <p className="mt-3 text-sm text-zircon">E-Mobilität, gesichert bis 2032</p>
+      </div>
     </div>
   )
 }

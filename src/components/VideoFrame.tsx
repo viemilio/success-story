@@ -7,18 +7,27 @@ import { Img } from './Img'
  * Uhr für ein Statement. Mit echter Videodatei folgt sie `video.currentTime`,
  * ohne Datei läuft sie per requestAnimationFrame (animierte Vorschau).
  */
-export function useStatementClock(s: Statement, playing: boolean, video: React.RefObject<HTMLVideoElement | null>, loop = false) {
-  const [t, setT] = useState(0)
+export function useStatementClock(
+  s: Statement,
+  playing: boolean,
+  video: React.RefObject<HTMLVideoElement | null>,
+  { loop = false, onEnd }: { loop?: boolean; onEnd?: () => void } = {},
+) {
+  const [clock, setClock] = useState({ id: s.id, t: 0 })
   const tRef = useRef(0)
-
+  const idRef = useRef(s.id)
+  const endRef = useRef(onEnd)
   useEffect(() => {
-    tRef.current = 0
-    setT(0)
-    if (video.current) video.current.currentTime = 0
-  }, [s.id, video])
+    endRef.current = onEnd
+  })
 
   useEffect(() => {
     const v = video.current
+    if (idRef.current !== s.id) {
+      idRef.current = s.id
+      tRef.current = 0
+      if (v) v.currentTime = 0
+    }
     if (s.src && v) {
       if (playing) v.play().catch(() => {})
       else v.pause()
@@ -30,15 +39,22 @@ export function useStatementClock(s: Statement, playing: boolean, video: React.R
       if (s.src && v) tRef.current = v.currentTime
       else tRef.current += (now - last) / 1000
       last = now
-      if (loop && tRef.current >= s.duration) tRef.current = 0
-      setT(Math.min(tRef.current, s.duration))
+      if (tRef.current >= s.duration) {
+        if (loop) tRef.current = 0
+        else {
+          setClock({ id: s.id, t: s.duration })
+          endRef.current?.()
+          return
+        }
+      }
+      setClock({ id: s.id, t: tRef.current })
       raf = requestAnimationFrame(tick)
     }
     raf = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(raf)
   }, [playing, s, video, loop])
 
-  return t
+  return clock.id === s.id ? clock.t : 0
 }
 
 const tc = (x: number) => `00:${String(Math.floor(x)).padStart(2, '0')}`
@@ -62,8 +78,8 @@ type Props = {
   t: number
   playing: boolean
   video: React.RefObject<HTMLVideoElement | null>
-  /** 'full' = Lower Third + große Untertitel, 'card' = kompakte Vorschau */
-  mode?: 'full' | 'card'
+  /** 'full' = Lower Third + große Untertitel, 'card' = kompakte Vorschau, 'bg' = nur Bild */
+  mode?: 'full' | 'card' | 'bg'
   className?: string
 }
 
@@ -80,8 +96,8 @@ export function VideoFrame({ s, t, playing, video, mode = 'full', className = ''
       >
         <Img src={s.poster} alt={s.name} className="h-full w-full object-cover" draggable={false} />
       </div>
-      {s.src && <video ref={video} src={s.src} playsInline muted={mode === 'card'} className="absolute inset-0 h-full w-full object-cover" />}
-      <div className="absolute inset-0 bg-gradient-to-t from-darkest/90 via-darkest/10 to-darkest/30" />
+      {s.src && <video ref={video} src={s.src} playsInline muted={mode !== 'full'} loop={mode === 'bg'} className="absolute inset-0 h-full w-full object-cover" />}
+      {mode !== 'bg' && <div className="absolute inset-0 bg-gradient-to-t from-darkest/90 via-darkest/10 to-darkest/30" />}
 
       {mode === 'full' && (
         <>

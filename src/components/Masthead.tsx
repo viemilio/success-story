@@ -1,7 +1,7 @@
-import { AnimatePresence, motion, useMotionValueEvent, useScroll, useSpring } from 'motion/react'
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react'
 import { useState } from 'react'
 import { scrollTo } from '../lib/scroll'
-import { HallbergLogo, MhpLogo, NewIndustrial } from './Logos'
+import { HallbergLogo } from './Logos'
 
 const nav = [
   { id: 'statements', label: 'Statements' },
@@ -11,55 +11,57 @@ const nav = [
   { id: 'zahlen', label: 'Zahlen' },
 ]
 
+/** Schwebende Glas-Navigation mit Fortschrittsring. */
 export function Masthead({ onPlay }: { onPlay: () => void }) {
   const { scrollY, scrollYProgress } = useScroll()
-  const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30 })
   const [visible, setVisible] = useState(false)
-  const [dark, setDark] = useState(false)
+  const [active, setActive] = useState('')
+  const [progress, setProgress] = useState(0)
 
-  useMotionValueEvent(scrollY, 'change', (y) => {
-    setVisible(y > window.innerHeight * 0.75)
-    const el = document.elementFromPoint(window.innerWidth / 2, 80)
-    setDark(!!el?.closest('[data-header="dark"]'))
+  useMotionValueEvent(scrollY, 'change', (y) => setVisible(y > window.innerHeight * 0.7))
+  useMotionValueEvent(scrollYProgress, 'change', (p) => {
+    setProgress(p)
+    const current = nav.filter((n) => {
+      const el = document.getElementById(n.id)
+      return el && el.getBoundingClientRect().top < window.innerHeight * 0.4
+    })
+    setActive(current.at(-1)?.id ?? '')
   })
 
   return (
     <AnimatePresence>
       {visible && (
         <motion.header
-          initial={{ y: '-100%' }}
-          animate={{ y: 0 }}
-          exit={{ y: '-100%' }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className={`fixed inset-x-0 top-0 z-50 border-b backdrop-blur-xl transition-colors duration-500 ${
-            dark ? 'border-white/10 bg-darkest/75 text-white' : 'border-darkest/10 bg-paper/80 text-darkest'
-          }`}
+          initial={{ y: -80, opacity: 0, x: '-50%' }}
+          animate={{ y: 0, opacity: 1, x: '-50%' }}
+          exit={{ y: -80, opacity: 0, x: '-50%' }}
+          transition={{ type: 'spring', stiffness: 260, damping: 28 }}
+          className="fixed left-1/2 top-4 z-50 flex w-[calc(100%-2rem)] max-w-max items-center gap-2 rounded-full bg-darkest/80 p-1.5 text-white shadow-[0_20px_60px_-20px_rgba(0,4,91,0.6)] ring-1 ring-white/10 backdrop-blur-2xl"
         >
-          <div className="flex items-center justify-between gap-6 px-5 py-3 md:px-10">
-            <button onClick={() => scrollTo(0)} className="flex items-center gap-4 text-left">
-              <NewIndustrial onDark={dark} className="text-lg md:text-xl" />
-              <span className="hidden h-6 w-px bg-current opacity-20 sm:block" />
-              <span className="hidden sm:block">
-                <HallbergLogo compact className="text-xs" />
-              </span>
-            </button>
-            <nav className="hidden items-center gap-6 lg:flex">
-              {nav.map((n) => (
-                <button key={n.id} onClick={() => scrollTo(`#${n.id}`)} className="eyebrow opacity-70 transition hover:opacity-100">
-                  {n.label}
-                </button>
-              ))}
-            </nav>
-            <div className="flex items-center gap-4">
-              <span className="hidden md:block">
-                <MhpLogo className="text-sm" />
-              </span>
-              <button onClick={onPlay} className="flex items-center gap-2 rounded-full bg-kiwi px-4 py-2 text-sm font-semibold text-darkest" data-cursor="Play">
-                ▶ <span className="hidden sm:inline">Statements</span>
+          <button onClick={() => scrollTo(0)} className="flex items-center gap-2 rounded-full px-3 py-1.5">
+            <HallbergLogo compact className="text-[11px]" />
+          </button>
+          <nav className="hidden items-center lg:flex">
+            {nav.map((n) => (
+              <button
+                key={n.id}
+                onClick={() => scrollTo(`#${n.id}`)}
+                className={`relative rounded-full px-4 py-2 text-sm font-medium transition ${active === n.id ? 'text-darkest' : 'text-white/70 hover:text-white'}`}
+              >
+                {active === n.id && <motion.span layoutId="nav-pill" className="absolute inset-0 rounded-full bg-white" transition={{ type: 'spring', stiffness: 400, damping: 32 }} />}
+                <span className="relative">{n.label}</span>
               </button>
-            </div>
-          </div>
-          <motion.div style={{ scaleX }} className="h-[2px] origin-left bg-vital" />
+            ))}
+          </nav>
+          <span className="relative ml-auto h-9 w-9 shrink-0" aria-hidden>
+            <svg viewBox="0 0 36 36" className="h-9 w-9 -rotate-90">
+              <circle cx="18" cy="18" r="15" fill="none" stroke="currentColor" strokeOpacity="0.2" strokeWidth="3" />
+              <circle cx="18" cy="18" r="15" fill="none" stroke="var(--color-kiwi)" strokeWidth="3" strokeLinecap="round" strokeDasharray={94.25} strokeDashoffset={94.25 * (1 - progress)} />
+            </svg>
+          </span>
+          <button onClick={onPlay} className="flex items-center gap-2 rounded-full bg-kiwi px-4 py-2 text-sm font-semibold text-darkest" data-cursor="Play">
+            ▶ <span className="hidden sm:inline">Statements</span>
+          </button>
         </motion.header>
       )}
     </AnimatePresence>
