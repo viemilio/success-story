@@ -1,33 +1,31 @@
-# 18 Monate. 2.400 Gründe. – MHP Success Story Microsite
+# Variante B: „Der große Gangwechsel“ – The New Industrial
 
-Interaktive, magazinartige Landingpage für eine MHP-Referenz (fiktive Story: Werkleiterin Jana Brenner rettet das HALLBERG-Werk Aalen).
+Alternative MHP-Success-Story-Microsite mit Video-Statements und Magazin-Aufmachung
+(Variante A „18 Monate. 2.400 Gründe.“ liegt auf `claude/mhp-success-story-site-q5df29`).
 
-## Stack
-- **React 19 + Vite 8 + TypeScript**
-- **Tailwind CSS v4** – MHP-Farben als Design-Tokens (`src/index.css`)
-- **Motion** (ehem. Framer Motion) – Reveals, Drag, Springs, Magnetic CTA
-- **GSAP ScrollTrigger** – Pinning, Wort-für-Wort-Prolog, horizontale Kapitelstrecke
-- **Lenis** – Smooth Scrolling
-- **Three.js / React Three Fiber** – Partikel-Welle im Hero (Shader)
+## Experience
+- **Cover-Hero** wie eine Magazin-Titelseite: Kampagnen-Masthead „The New Industrial“, Kundenlogo (HALLBERG), Titelzeile, Cover-Lines
+- **Video-Wand**: fünf Statements im Hochformat, Hover = stumme Vorschau, Klick = Vollbild-Player im Stories-Format
+  (tippen weiter/zurück, halten = Pause, ← → / Leertaste / Esc)
+- **Redaktioneller Einstieg** mit Steckbrief, Initial und Pull-Quote
+- **Vier Prinzipien**, mit denen der Kunde The New Industrial formt (Bild folgt dem Cursor)
+- **Interview** im Magazin-Stil mit „sticky“ Video-Statement
+- **Bilanz**: Kurve zeichnet sich beim Scrollen, Kennzahlen
+- **Fahrplan**-Timeline und Schluss-Statement
 
-## Dramaturgie
-Hero → Prolog (die E-Mail) → 01 Das Warum → Der Einsatz (2.400 / 71 / 18 / 0) → 02 Das Wie (vier Momente, horizontal) → Interlude-Zitat → 03 Die Wirkung (KPIs + Vorher/Nachher-Slider) → 04 Die Stimmen → Epilog „Das Licht brennt noch.“
+## Videos einsetzen
+In `src/content.ts` bei einem Statement `src: '/video/name.mp4'` ergänzen (Datei nach `public/video/`).
+Untertitel (`captions`) und Länge (`duration`) laufen dann synchron zum Video.
+Ohne `src` zeigt der Player eine animierte Vorschau (Ken-Burns-Effekt auf dem Foto, dazu Untertitel).
 
 ## Entwicklung
 ```bash
 npm install
-npm run dev     # http://localhost:5173
-npm run build
+npm run dev            # http://localhost:5173
+npm run build:preview  # eigenständige Datei preview/index.html
 ```
 
 ## Hinweise
-- Alle Texte, Personen und Zahlen sind Platzhalter (`src/content.ts`).
-- Personenfotos sind Unsplash-Platzhalter; fällt ein Bild aus, erscheint ein MHP-Verlauf.
-  Bildbänder in `public/img/` stammen aus dem MHP Brand Board.
-- Schrift: Hanken Grotesk als Platzhalter – die MHP-Hausschrift in `--font-sans` eintragen.
-- „Darkest Blue“ ist als `#00045B` umgesetzt (gemessener Farbwert der Fläche im Board; der Beschriftungswert `#000FF5` wäre ein helles Blau).
-- `prefers-reduced-motion` wird respektiert.
-
-## Vorschau ohne Server
-`preview/index.html` ist eine einzelne, eigenständige HTML-Datei (inkl. Code, Schrift und Bildern).
-Einfach im Browser per Doppelklick öffnen. Neu erzeugen mit `npm run build:preview`.
+- Kunde, Logo, Personen, Zitate und Zahlen sind fiktive Platzhalter. Fotos von Unsplash, mit MHP-Verlauf als Fallback.
+- „The New Industrial“ ist hier rein typografisch umgesetzt – bei Bedarf durch das offizielle Kampagnen-Artwork ersetzen.
+- Schrift: Hanken Grotesk als Platzhalter für die MHP-Hausschrift (`--font-sans`).

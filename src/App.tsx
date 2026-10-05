@@ -1,53 +1,48 @@
-import { AnimatePresence } from 'motion/react'
-import { useCallback, useEffect, useState } from 'react'
+import { AnimatePresence, LayoutGroup } from 'motion/react'
+import { useEffect, useState } from 'react'
+import { Closing } from './components/Closing'
+import { Cover } from './components/Cover'
 import { Cursor } from './components/Cursor'
-import { Finale } from './components/Finale'
-import { Header } from './components/Header'
-import { Hero } from './components/Hero'
-import { Impact } from './components/Impact'
-import { Interlude } from './components/Interlude'
-import { Loader } from './components/Loader'
-import { Marquee } from './components/Marquee'
-import { Prologue } from './components/Prologue'
-import { Stakes } from './components/Stakes'
-import { Turns } from './components/Turns'
-import { Voices } from './components/Voices'
-import { Why } from './components/Why'
-import { lockScroll, reducedMotion, ScrollTrigger, startSmoothScroll } from './lib/scroll'
+import { Interview } from './components/Interview'
+import { Lead } from './components/Lead'
+import { Masthead } from './components/Masthead'
+import { Numbers } from './components/Numbers'
+import { Pillars } from './components/Pillars'
+import { StoryPlayer } from './components/StoryPlayer'
+import { StoryWall } from './components/StoryWall'
+import { Timeline } from './components/Timeline'
+import { startSmoothScroll } from './lib/scroll'
 
 export default function App() {
-  const [loading, setLoading] = useState(!reducedMotion)
-  const done = useCallback(() => setLoading(false), [])
+  const [ready, setReady] = useState(false)
+  const [story, setStory] = useState<number | null>(null)
 
   useEffect(() => {
     window.history.scrollRestoration = 'manual'
     window.scrollTo(0, 0)
-    return startSmoothScroll()
+    const stop = startSmoothScroll()
+    const id = requestAnimationFrame(() => setReady(true))
+    return () => {
+      stop()
+      cancelAnimationFrame(id)
+    }
   }, [])
 
-  useEffect(() => {
-    lockScroll(loading)
-    if (!loading) requestAnimationFrame(() => ScrollTrigger.refresh())
-  }, [loading])
-
   return (
-    <>
-      <AnimatePresence>{loading && <Loader onDone={done} />}</AnimatePresence>
+    <LayoutGroup>
       <Cursor />
-      <Header />
-      <div className="grain" aria-hidden />
+      <Masthead onPlay={() => setStory(0)} />
       <main>
-        <Hero ready={!loading} />
-        <Prologue />
-        <Why />
-        <Marquee items={['Mut', 'Vertrauen', 'Zukunft', 'Aalen']} className="bg-kiwi text-darkest" />
-        <Stakes />
-        <Turns />
-        <Interlude />
-        <Impact />
-        <Voices />
-        <Finale />
+        <Cover ready={ready} onPlay={() => setStory(0)} />
+        <StoryWall onOpen={setStory} />
+        <Lead />
+        <Pillars />
+        <Interview />
+        <Numbers />
+        <Timeline />
+        <Closing onPlay={() => setStory(0)} />
       </main>
-    </>
+      <AnimatePresence>{story !== null && <StoryPlayer start={story} onClose={() => setStory(null)} />}</AnimatePresence>
+    </LayoutGroup>
   )
 }
