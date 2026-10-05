@@ -1,31 +1,30 @@
-# Variante B: „Der große Gangwechsel“ – Video-Statements
+# Variante C: „Linie 3. Ein Brief.“ – maximal emotional
 
-Alternative MHP-Success-Story-Microsite mit Video-Statements und Magazin-Aufmachung
-(Variante A „18 Monate. 2.400 Gründe.“ liegt auf `claude/mhp-success-story-site-q5df29`).
+Dritte MHP-Success-Story-Microsite zum Vergleich
+(A: `claude/mhp-success-story-site-q5df29`, B: `claude/mhp-success-story-video`).
 
-## Experience
-- **Video-Hero**: Statement der Protagonistin läuft stumm als Bühne, Logo-Lockup HALLBERG × MHP, Headline im Magazinstil
-- **Video-Wand**: fünf Statements im Hochformat, Hover = stumme Vorschau, Klick = Vollbild-Player im Stories-Format
-  (tippen weiter/zurück, halten = Pause, ← → / Leertaste / Esc)
-- **Story als Bento-Raster**: Steckbrief, Kennzahlen-Kacheln, Text, Zitat
-- **Vier Prinzipien** als aufklappende Bildkarten
-- **Interview als Chat-Verlauf** mit „sticky“ Video-Statement
-- **Bilanz**: Kurve zeichnet sich beim Scrollen, Kennzahlen
-- **Fahrplan**-Timeline und Schluss-Statement
+## Idee
+Die Seite ist ein Brief: Werkleiterin Jana Brenner schreibt ihrem Vater, der 38 Jahre an Linie 3 stand.
+Die Dramaturgie führt von der Dunkelheit ins Licht.
 
-## Videos einsetzen
-In `src/content.ts` bei einem Statement `src: '/video/name.mp4'` ergänzen (Datei nach `public/video/`).
-Untertitel (`captions`) und Länge (`duration`) laufen dann synchron zum Video.
-Ohne `src` zeigt der Player eine animierte Vorschau (Ken-Burns-Effekt auf dem Foto, dazu Untertitel).
+1. **Intro**: schwarz, das Hallenlicht springt flackernd an, „Lieber Papa,“ in Handschrift, Titel „Linie 3“
+2. **Sechs Briefseiten als Filmszenen** mit Kino-Balken, Bildern mit langsamem Zoom und Sätzen, die beim Scrollen erscheinen
+   (Erinnerung 1986 in Schwarzweiß → E-Mail → Nacht des Zwillings → Menschen → 3:04 Uhr → Heute)
+3. **2.400 Lichter**: ein Punkt pro Mensch, die Lichter gehen beim Scrollen nacheinander an
+4. **Lichtblitz um 3:04 Uhr**: die Szene wird hell, als die erste E-Achse läuft
+5. **Die Stimmen**: schwebende Video-Bubbles wie bei einem Videoanruf, Klick öffnet den Story-Player
+6. **Finale im Licht**: „Das Licht brennt noch, Papa.“, Unterschrift „Deine Jana“, Abspann wie im Kino
+
+Unten links zeigen Ort und Zeit der aktuellen Szene an, wo man sich im Brief befindet.
 
 ## Entwicklung
 ```bash
 npm install
-npm run dev            # http://localhost:5173
+npm run dev
 npm run build:preview  # eigenständige Datei preview/index.html
 ```
 
 ## Hinweise
-- Kunde, Logo, Personen, Zitate und Zahlen sind fiktive Platzhalter. Fotos von Unsplash, mit MHP-Verlauf als Fallback.
-- „The New Industrial“ ist hier rein typografisch umgesetzt – bei Bedarf durch das offizielle Kampagnen-Artwork ersetzen.
-- Schrift: Hanken Grotesk als Platzhalter für die MHP-Hausschrift (`--font-sans`).
+- Alle Personen, Texte und Zahlen sind fiktive Platzhalter (`src/content.ts`), Fotos von Unsplash mit MHP-Verlauf als Fallback.
+- Videos: bei einem Statement `src: '/video/name.mp4'` ergänzen, sonst läuft eine animierte Vorschau.
+- Handschrift (Caveat) nur für Anrede und Unterschrift, sonst Hanken Grotesk als Platzhalter für die MHP-Hausschrift.

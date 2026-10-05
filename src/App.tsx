@@ -1,16 +1,14 @@
-import { AnimatePresence, LayoutGroup } from 'motion/react'
-import { useEffect, useState } from 'react'
-import { Closing } from './components/Closing'
-import { Cover } from './components/Cover'
+import { AnimatePresence } from 'motion/react'
+import { Fragment, useEffect, useState } from 'react'
+import { scenes } from './content'
 import { Cursor } from './components/Cursor'
-import { Interview } from './components/Interview'
-import { Lead } from './components/Lead'
-import { Masthead } from './components/Masthead'
-import { Numbers } from './components/Numbers'
-import { Pillars } from './components/Pillars'
+import { Ending } from './components/Ending'
+import { Hud } from './components/Hud'
+import { Intro } from './components/Intro'
+import { Lights } from './components/Lights'
+import { Scene } from './components/Scene'
 import { StoryPlayer } from './components/StoryPlayer'
-import { StoryWall } from './components/StoryWall'
-import { Timeline } from './components/Timeline'
+import { Voices } from './components/Voices'
 import { startSmoothScroll } from './lib/scroll'
 
 export default function App() {
@@ -29,20 +27,22 @@ export default function App() {
   }, [])
 
   return (
-    <LayoutGroup>
+    <>
       <Cursor />
-      <Masthead onPlay={() => setStory(0)} />
+      <Hud onPlay={() => setStory(0)} />
+      <div className="grain" aria-hidden />
       <main>
-        <Cover ready={ready} onPlay={() => setStory(0)} />
-        <StoryWall onOpen={setStory} />
-        <Lead />
-        <Pillars />
-        <Interview />
-        <Numbers />
-        <Timeline />
-        <Closing onPlay={() => setStory(0)} />
+        <Intro ready={ready} />
+        {scenes.map((s, i) => (
+          <Fragment key={s.id}>
+            <Scene scene={s} index={i} total={scenes.length} onVoice={setStory} />
+            {s.id === 'mail' && <Lights />}
+            {s.id === 'rotor' && <Voices onOpen={setStory} />}
+          </Fragment>
+        ))}
+        <Ending onPlay={() => setStory(0)} />
       </main>
       <AnimatePresence>{story !== null && <StoryPlayer start={story} onClose={() => setStory(null)} />}</AnimatePresence>
-    </LayoutGroup>
+    </>
   )
 }

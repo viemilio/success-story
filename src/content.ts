@@ -1,22 +1,8 @@
-// Variante B – „Der große Gangwechsel“. Fiktiver Kunde, fiktive Personen,
+// Variante C – „Linie 3. Ein Brief.“ Fiktiver Kunde, fiktive Personen,
 // alle Texte und Zahlen sind Platzhalter für die echte Referenz.
 
 const u = (id: string, w = 1400) =>
   `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=80`
-
-export const cover = {
-  kicker: 'Transformation · HALLBERG Antriebstechnik',
-  title: ['Der große', 'Gangwechsel'],
-  lead:
-    'Siebzig Jahre lang baute Aalen Getriebe für den Verbrenner. Dann gab der Konzern dem Werk 18 Monate. Werkleiterin Jana Brenner hat sie genutzt, um zu zeigen, wie The New Industrial aussieht.',
-  portrait: u('photo-1573496359142-b8d87734a5a2', 1600),
-  coverLines: [
-    { big: '2.400', small: 'Jobs gesichert, kein einziger abgebaut' },
-    { big: '14', small: 'Monate vom Beschluss bis zum Serienstart' },
-    { big: '5', small: 'Video-Statements aus dem Werk' },
-  ],
-  issue: 'Ausgabe 10 / 2026',
-}
 
 /** Ein Video-Statement. `src` = echte MP4-Datei; ohne `src` läuft eine animierte Vorschau mit Untertiteln. */
 export type Statement = {
@@ -99,96 +85,122 @@ export const statements: Statement[] = [
   },
 ]
 
-export const lead = {
-  dropcap: 'E',
-  paragraphs: [
-    'Es gibt Werke, deren Zukunft in Tabellen entschieden wird. Aalen war so ein Werk: 71 Jahre alt, 2.400 Beschäftigte, ein Produkt, dessen Ende absehbar war. Getriebe für Verbrenner. Im März 2024 setzte der Konzernvorstand eine Frist. 18 Monate, dann wird entschieden.',
-    'Was dann passierte, steht in keinem Lehrbuch. Jana Brenner legte keinen Sparplan vor, sondern einen Umbauplan. Zusammen mit MHP ließ sie das gesamte Werk als digitalen Zwilling entstehen, bevor eine einzige Maschine bewegt wurde. Und sie gab den Stift an die, die das Werk am besten kennen: die Belegschaft.',
-  ],
+export const intro = {
+  salutation: 'Lieber Papa,',
+  title: 'Linie 3',
+  sub: 'Ein Brief von Jana Brenner an ihren Vater. Und die Geschichte, wie ein 71 Jahre altes Werk in Aalen lernte, wieder zu leuchten.',
 }
 
-export const pillars = [
+export type Scene = {
+  id: string
+  stamp: string
+  place: string
+  image: string
+  fallback?: string
+  tone?: 'memory' | 'night' | 'flash' | 'day'
+  lines: string[]
+  voice?: number
+}
+
+export const scenes: Scene[] = [
   {
-    no: '01',
-    title: 'Simulation vor Stahl',
-    text: '11.000 Szenarien im digitalen Zwilling, bevor die erste Schraube gelöst wurde. Umgebaut wurde nur, was virtuell bewiesen war.',
-    image: '/img/wave.webp',
-  },
-  {
-    no: '02',
-    title: 'Menschen vor Maschinen',
-    text: '600 Beschäftigte haben ihre Linien selbst entworfen. Transformation wurde nicht verordnet, sondern gemeinsam gebaut.',
+    id: 'erinnerung',
+    stamp: '1986',
+    place: 'Aalen, Werkstor 2',
     image: '/img/robots.webp',
+    tone: 'memory',
+    lines: [
+      'ich war sieben, als du mich das erste Mal mitgenommen hast.',
+      'Linie 3. Der Lärm, der Geruch von Öl, deine Hand auf meiner Schulter.',
+      'Du hast gesagt: „Ein Werk ist nicht die Halle. Es sind die Leute, die morgens das Licht anmachen.“',
+    ],
   },
   {
-    no: '03',
-    title: 'Tempo vor Perfektion',
-    text: 'Neun Tage Umbau statt neun Wochen. Virtuelle Inbetriebnahme macht Mut zur Geschwindigkeit möglich.',
+    id: 'mail',
+    stamp: '14.03.2024 · 07:42',
+    place: 'Büro der Werkleitung',
+    image: '/img/darkest.webp',
+    tone: 'night',
+    lines: [
+      'An einem Donnerstag kam die E-Mail.',
+      'Achtzehn Monate. Dann wird entschieden, ob es Aalen noch gibt.',
+      'Ich habe lange aus dem Fenster auf Linie 3 geschaut. Und dann habe ich nicht aufgegeben.',
+    ],
+  },
+  {
+    id: 'zwilling',
+    stamp: '09.04.2024 · 02:17',
+    place: 'Halle 4, Nachtschicht',
+    image: '/img/wave.webp',
+    tone: 'night',
+    lines: [
+      'Wir haben uns Hilfe geholt. Die Leute von MHP blieben nachts mit uns in der Halle.',
+      'Sie haben unser Werk ein zweites Mal gebaut, aus Daten. Einen digitalen Zwilling.',
+      'In einer Nacht liefen 11.000 Szenarien. Am Morgen wusste ich: Es geht.',
+    ],
+  },
+  {
+    id: 'menschen',
+    stamp: '17.06.2024 · 14:00',
+    place: 'Halle 2, Werkstatt-Sprint',
+    image: '/img/event.webp',
+    tone: 'night',
+    voice: 1,
+    lines: [
+      'Und dann haben wir das gemacht, was du immer wolltest: Wir haben die Leute gefragt.',
+      'Sechshundert Kolleginnen und Kollegen haben ihre eigenen Linien entworfen.',
+      'Kemal hat geweint, Papa. Er sagt, das hat ihn in 27 Jahren noch nie jemand gefragt.',
+    ],
+  },
+  {
+    id: 'rotor',
+    stamp: '22.05.2025 · 03:04',
+    place: 'Linie 3',
     image: '/img/glass.webp',
+    tone: 'flash',
+    lines: [
+      'Um 3:04 Uhr lief die erste E-Achse vom Band. An deiner Linie.',
+      'Vier Monate vor der Frist.',
+      'Niemand ist nach Hause gegangen.',
+    ],
   },
   {
-    no: '04',
-    title: 'Wirkung vor Rendite',
-    text: 'Minus 41 Prozent Energie pro Bauteil. Wer neu baut, baut von Anfang an effizient.',
+    id: 'heute',
+    stamp: 'Heute',
+    place: 'Aalen',
     image: '/img/forest.webp',
+    tone: 'day',
+    lines: [
+      'Heute sagen sie, wir formen The New Industrial. Die neue Industrie.',
+      'Du hättest nur gelacht und gesagt: „Wir machen halt weiter.“',
+      'Aber es ist mehr als das. Wir haben bewiesen, dass Zukunft hier gebaut wird. Nicht anderswo.',
+    ],
   },
 ]
 
-export const interview = {
-  intro: 'Jana Brenner, 41, leitet das HALLBERG-Werk in Aalen seit 2021. Ein Gespräch über Mut, Zweifel und die Frage, was eine Fabrik eigentlich ist.',
-  qa: [
-    {
-      q: 'Frau Brenner, die Frist war 18 Monate. Hatten Sie je einen Plan B?',
-      a: 'Nein. Ein Plan B ist eine Einladung, Plan A nicht ganz ernst zu nehmen. Wir hatten einen Plan, ein Team und einen Zwilling, der uns jeden Morgen gesagt hat, ob wir noch auf Kurs sind.',
-    },
-    {
-      q: 'Was hat MHP anders gemacht als andere Berater?',
-      a: 'Sie haben nicht aus dem Projektraum heraus beraten. Die waren in der Nachtschicht dabei, als wir die ersten Szenarien durchgerechnet haben. Wer um drei Uhr nachts noch da ist, dem glaubt man auch tagsüber.',
-    },
-    {
-      q: 'Man spricht von The New Industrial. Was bedeutet das für Sie?',
-      a: 'Dass die Industrie nicht stirbt, sondern sich neu erfindet. Mit Software, mit Daten, aber vor allem mit Menschen, die man ernst nimmt. Aalen ist kein Sonderfall, sondern ein Prototyp.',
-    },
-    {
-      q: 'Was würden Sie anderen Werkleitern raten?',
-      a: 'Fangen Sie im Zwilling an, aber hören Sie in der Halle auf. Die beste Simulation nützt nichts, wenn die Leute an der Linie nicht mitbauen.',
-    },
+export const people = {
+  count: 2400,
+  title: '2.400 Lichter',
+  text: 'Jeder Punkt ist ein Mensch, der am nächsten Montag wieder zur Arbeit gehen konnte. Kein einziger Arbeitsplatz ging verloren.',
+  facts: [
+    { value: '14', label: 'Monate bis zum Serienstart' },
+    { value: '−41 %', label: 'Energie pro Bauteil' },
+    { value: '380 Mio. €', label: 'Neuaufträge bis 2032' },
   ],
 }
 
-export const chart = {
-  title: 'Auslastung Werk Aalen',
-  unit: '%',
-  points: [
-    { label: 'Q1/24', v: 58 },
-    { label: 'Q3/24', v: 55 },
-    { label: 'Q1/25', v: 63 },
-    { label: 'Q3/25', v: 81 },
-    { label: 'Q1/26', v: 90 },
-    { label: 'Q3/26', v: 94 },
-  ],
+export const ending = {
+  lines: ['Das Licht brennt noch, Papa.', 'Und es wird nicht mehr ausgehen.'],
+  signature: 'Deine Jana',
 }
 
-export const facts = [
-  { value: '2.400', label: 'Arbeitsplätze gesichert' },
-  { value: '−41 %', label: 'Energie pro Bauteil' },
-  { value: '9 Tage', label: 'Umbau statt 9 Wochen' },
-  { value: '380 Mio. €', label: 'Neuaufträge bis 2032' },
+export const credits = [
+  { role: 'Protagonistin', name: 'Jana Brenner, Werkleiterin' },
+  { role: 'Mit', name: 'Kemal Aydın · Lea Schuster · und 2.398 weiteren' },
+  { role: 'Kunde', name: 'HALLBERG Antriebstechnik, Werk Aalen' },
+  { role: 'Transformationspartner', name: 'MHP – A Porsche Company' },
+  { role: 'Im Zeichen von', name: 'The New Industrial' },
 ]
-
-export const timeline = [
-  { date: 'März 2024', title: 'Die Frist', text: '18 Monate, um das Werk neu zu erfinden.' },
-  { date: 'April 2024', title: 'Der Zwilling', text: 'Das Werk entsteht ein zweites Mal, virtuell. 11.000 Szenarien in einer Nacht.' },
-  { date: 'Juni 2024', title: 'Die Werkstatt-Sprints', text: '600 Beschäftigte entwerfen ihre eigenen Linien.' },
-  { date: 'Januar 2025', title: 'Neun Tage', text: 'Linie 3 wird umgebaut. Geplant waren neun Wochen.' },
-  { date: 'Mai 2025', title: 'Der erste Rotor', text: 'Die erste E-Achse läuft vom Band, vier Monate vor der Frist.' },
-  { date: '2026', title: 'Das Leitwerk', text: 'Aalen wird Blaupause für alle elf HALLBERG-Werke.' },
-]
-
-export const closing = {
-  line: ['The New Industrial', 'wird nicht verkündet.', 'Es wird gebaut.'],
-  sub: 'Und manchmal beginnt es in einer Getriebefabrik auf der Schwäbischen Alb.',
-}
 
 export const moreStories = [
   { title: 'Simulation-First Automation: Schaefflers Weg zu Software-Defined Manufacturing', href: 'https://www.mhp.com/de/insights/unsere-erfahrung/simulation-first-automation-schaefflers-weg-zu-software-defined-manufacturing', tag: 'Manufacturing' },
