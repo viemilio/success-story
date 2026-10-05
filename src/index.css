@@ -1,0 +1,76 @@
+@import "tailwindcss";
+@import "@fontsource-variable/hanken-grotesk";
+
+/* MHP Corporate Identity – Farbwerte aus dem Brand Board */
+@theme {
+  --color-darkest: #00045b;
+  --color-mhp: #000099;
+  --color-vital: #1612ff;
+  --color-mint: #00cc67;
+  --color-kiwi: #ddef03;
+  --color-zircon: #cdd6ff;
+
+  /* Platzhalter für die lizenzierte MHP-Hausschrift – hier einfach austauschen */
+  --font-sans: "Hanken Grotesk Variable", "Frutiger", "Segoe UI", system-ui, sans-serif;
+
+  --ease-apple: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    background: var(--color-darkest);
+    color: white;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  html.lenis, html.lenis body { height: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+  .lenis.lenis-stopped { overflow: hidden; }
+  body { overflow-x: clip; }
+  ::selection { background: var(--color-kiwi); color: var(--color-darkest); }
+  @media (pointer: fine) {
+    html.has-cursor, html.has-cursor * { cursor: none !important; }
+  }
+}
+
+@utility display {
+  font-weight: 650;
+  letter-spacing: -0.045em;
+  line-height: 0.88;
+  text-wrap: balance;
+}
+
+@utility eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+@utility grain {
+  position: fixed;
+  inset: -50%;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 1.2s steps(6) infinite;
+}
+
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -4%); }
+  60% { transform: translate(-4%, -1%); }
+  80% { transform: translate(3%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain { animation: none; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
