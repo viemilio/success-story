@@ -27,3 +27,7 @@ npm run build
 - Schrift: Hanken Grotesk als Platzhalter – die MHP-Hausschrift in `--font-sans` eintragen.
 - „Darkest Blue“ ist als `#00045B` umgesetzt (gemessener Farbwert der Fläche im Board; der Beschriftungswert `#000FF5` wäre ein helles Blau).
 - `prefers-reduced-motion` wird respektiert.
+
+## Vorschau ohne Server
+`preview/index.html` ist eine einzelne, eigenständige HTML-Datei (inkl. Code, Schrift und Bildern).
+Einfach im Browser per Doppelklick öffnen. Neu erzeugen mit `npm run build:preview`.
